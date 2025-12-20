@@ -1,14 +1,21 @@
 from pathlib import Path
 
-# =========================
+
+# ==================================================
 # المسار الأساسي للمشروع
-# =========================
+# ==================================================
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# =========================
+# ==================================================
+# مجلد القوالب الرئيسي
+# ==================================================
+TEMPLATES_DIR = BASE_DIR / 'templates'
+
+
+# ==================================================
 # الأمان (Security)
-# =========================
+# ==================================================
 SECRET_KEY = 'django-insecure-change-this-in-production'
 
 DEBUG = True
@@ -16,9 +23,9 @@ DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
-# =========================
+# ==================================================
 # التطبيقات
-# =========================
+# ==================================================
 INSTALLED_APPS = [
     # Django Core
     'django.contrib.admin',
@@ -28,26 +35,25 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Local Apps (E-Commerce Core)
-    'core',       # المستخدمين – الصلاحيات – الإعدادات العامة
-    'catalog',    # المنتجات – التصنيفات – المخزون
-    'orders',     # السلة – الطلبات – الدفع
+    # Local Apps
+    'core.apps.CoreConfig',
+    'catalog.apps.CatalogConfig',
+    'orders.apps.OrdersConfig',
 ]
 
 
-# =========================
-# المستخدم المخصص (Custom User)
-# =========================
+# ==================================================
+# المستخدم المخصص
+# ==================================================
 AUTH_USER_MODEL = 'core.User'
 
 
-# =========================
+# ==================================================
 # الوسائط (Middleware)
-# =========================
+# ==================================================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
-    # الجلسات + اللغات + التوقيت
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
 
@@ -59,19 +65,24 @@ MIDDLEWARE = [
 ]
 
 
-# =========================
-# الإعدادات الأساسية
-# =========================
+# ==================================================
+# إعدادات الروابط
+# ==================================================
 ROOT_URLCONF = 'LD.urls'
 
+
+# ==================================================
+# القوالب (Templates)
+# ==================================================
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
 
         # مجلد templates الرئيسي
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [TEMPLATES_DIR],
 
         'APP_DIRS': True,
+
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -83,12 +94,16 @@ TEMPLATES = [
     },
 ]
 
+
+# ==================================================
+# WSGI
+# ==================================================
 WSGI_APPLICATION = 'LD.wsgi.application'
 
 
-# =========================
+# ==================================================
 # قاعدة البيانات
-# =========================
+# ==================================================
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -97,41 +112,34 @@ DATABASES = {
 }
 
 
-# =========================
+# ==================================================
 # التحقق من كلمات المرور
-# =========================
+# ==================================================
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
         'OPTIONS': {'min_length': 8},
     },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 
-# =========================
+# ==================================================
 # اللغة والتوقيت (🇸🇦)
-# =========================
+# ==================================================
 LANGUAGE_CODE = 'ar'
 
 TIME_ZONE = 'Asia/Riyadh'
 
 USE_I18N = True
-USE_L10N = True
 USE_TZ = True
 
 
-# =========================
-# إعدادات الاتجاه RTL
-# =========================
+# ==================================================
+# اللغات + RTL
+# ==================================================
 LANGUAGES = [
     ('ar', 'العربية'),
 ]
@@ -141,17 +149,28 @@ LOCALE_PATHS = [
 ]
 
 
-# =========================
-# الملفات الثابتة
-# =========================
+# ==================================================
+# الملفات الثابتة (Static)
+# ==================================================
 STATIC_URL = '/static/'
 
+# ملفات التصميم أثناء التطوير
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
+# مجلد التجميع للإنتاج
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# =========================
+
+# ==================================================
+# ملفات الوسائط (Media)
+# ==================================================
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+
+# ==================================================
 # الإعدادات الافتراضية
-# =========================
+# ==================================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

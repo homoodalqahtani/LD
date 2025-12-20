@@ -1,3 +1,14 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+# ==================================
+# الصفحة الرئيسية
+# ==================================
+def home_view(request):
+    """
+    عرض الصفحة الرئيسية لموقع رفاهية التصاميم للمقاولات
+    """
+    context = {
+        "page_title": "رفاهية التصاميم للمقاولات",
+    }
+    return render(request, "home.html", context)

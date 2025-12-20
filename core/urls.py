@@ -1,12 +1,14 @@
-"""
-URLs for core app
-- Authentication
-- Users
-- Site settings
-"""
-
 from django.urls import path
+from . import views
+
+# اسم التطبيق (مهم للتوسعة واستخدام namespace لاحقًا)
+app_name = 'core'
 
 urlpatterns = [
-    # سيتم إضافة المسارات لاحقًا
+
+    # =========================
+    # الصفحة الرئيسية
+    # =========================
+    path('', views.home_view, name='home'),
+
 ]

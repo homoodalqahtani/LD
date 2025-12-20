@@ -4,40 +4,51 @@ from catalog.models import Product
 
 
 class Cart(models.Model):
-    """
-    سلة المستخدم
-    """
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
-        related_name='cart'
+        related_name='cart',
+        verbose_name="المستخدم"
     )
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="تاريخ الإنشاء"
+    )
+
+    class Meta:
+        verbose_name = "سلة"
+        verbose_name_plural = "سلال التسوق"
 
     def __str__(self):
-        return f"Cart for {self.user.username}"
+        return f"سلة {self.user.username}"
 
 
 class CartItem(models.Model):
-    """
-    عناصر السلة
-    """
     cart = models.ForeignKey(
         Cart,
         on_delete=models.CASCADE,
-        related_name='items'
+        related_name='items',
+        verbose_name="السلة"
     )
-    product = models.ForeignKey(Product, on_delete=models.PROTECT)
-    quantity = models.PositiveIntegerField(default=1)
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.PROTECT,
+        verbose_name="المنتج"
+    )
+    quantity = models.PositiveIntegerField(
+        default=1,
+        verbose_name="الكمية"
+    )
+
+    class Meta:
+        verbose_name = "عنصر سلة"
+        verbose_name_plural = "عناصر السلة"
 
     def __str__(self):
-        return f"{self.product.name} x {self.quantity}"
+        return f"{self.product.name} × {self.quantity}"
 
 
 class Order(models.Model):
-    """
-    الطلب النهائي
-    """
     STATUS_CHOICES = [
         ('pending', 'قيد المعالجة'),
         ('paid', 'مدفوع'),
@@ -49,38 +60,63 @@ class Order(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.PROTECT,
-        related_name='orders'
+        related_name='orders',
+        verbose_name="العميل"
     )
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending',
+        verbose_name="حالة الطلب"
+    )
+    total_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name="إجمالي المبلغ"
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="تاريخ الطلب"
+    )
 
-    created_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name = "طلب"
+        verbose_name_plural = "الطلبات"
 
     def __str__(self):
-        return f"Order #{self.id}"
+        return f"طلب رقم {self.id}"
 
 
 class OrderItem(models.Model):
-    """
-    عناصر الطلب
-    """
     order = models.ForeignKey(
         Order,
         on_delete=models.CASCADE,
-        related_name='items'
+        related_name='items',
+        verbose_name="الطلب"
     )
-    product = models.ForeignKey(Product, on_delete=models.PROTECT)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    quantity = models.PositiveIntegerField()
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.PROTECT,
+        verbose_name="المنتج"
+    )
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name="سعر الوحدة"
+    )
+    quantity = models.PositiveIntegerField(
+        verbose_name="الكمية"
+    )
+
+    class Meta:
+        verbose_name = "عنصر طلب"
+        verbose_name_plural = "عناصر الطلب"
 
     def __str__(self):
-        return f"{self.product.name}"
+        return self.product.name
 
 
 class Payment(models.Model):
-    """
-    الدفع
-    """
     PAYMENT_METHODS = [
         ('mada', 'مدى'),
         ('stc', 'STC Pay'),
@@ -90,13 +126,31 @@ class Payment(models.Model):
     order = models.OneToOneField(
         Order,
         on_delete=models.CASCADE,
-        related_name='payment'
+        related_name='payment',
+        verbose_name="الطلب"
     )
-    method = models.CharField(max_length=20, choices=PAYMENT_METHODS)
-    is_successful = models.BooleanField(default=False)
-    transaction_id = models.CharField(max_length=255, blank=True)
+    method = models.CharField(
+        max_length=20,
+        choices=PAYMENT_METHODS,
+        verbose_name="طريقة الدفع"
+    )
+    is_successful = models.BooleanField(
+        default=False,
+        verbose_name="تم الدفع"
+    )
+    transaction_id = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name="رقم العملية"
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="تاريخ الدفع"
+    )
 
-    created_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name = "عملية دفع"
+        verbose_name_plural = "عمليات الدفع"
 
     def __str__(self):
-        return f"Payment for Order #{self.order.id}"
+        return f"دفع الطلب رقم {self.order.id}"
