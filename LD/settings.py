@@ -49,6 +49,14 @@ AUTH_USER_MODEL = 'core.User'
 
 
 # ==================================================
+# إعدادات تسجيل الدخول (مهمة جدًا)
+# ==================================================
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+
+# ==================================================
 # الوسائط (Middleware)
 # ==================================================
 MIDDLEWARE = [
@@ -61,6 +69,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -78,7 +87,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
 
-        # مجلد templates الرئيسي
+        # ✅ المجلد الرئيسي للقوالب
         'DIRS': [TEMPLATES_DIR],
 
         'APP_DIRS': True,
@@ -150,6 +159,14 @@ LOCALE_PATHS = [
 
 
 # ==================================================
+# تخصيص لوحة التحكم (Admin Branding)
+# ==================================================
+ADMIN_SITE_HEADER = "رفاهية التصاميم – لوحة التحكم"
+ADMIN_SITE_TITLE = "رفاهية التصاميم"
+ADMIN_INDEX_TITLE = "إدارة الموقع"
+
+
+# ==================================================
 # الملفات الثابتة (Static)
 # ==================================================
 STATIC_URL = '/static/'
@@ -168,6 +185,24 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # ==================================================
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+# ==================================================
+# الجلسات (Sessions)
+# ==================================================
+SESSION_COOKIE_AGE = 60 * 60 * 24  # 24 ساعة
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+
+# ==================================================
+# إعدادات أمان إضافية (جاهزية 2025)
+# ==================================================
+CSRF_COOKIE_SECURE = False      # True عند HTTPS
+SESSION_COOKIE_SECURE = False  # True عند HTTPS
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
 
 
 # ==================================================

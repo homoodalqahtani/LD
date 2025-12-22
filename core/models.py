@@ -2,22 +2,26 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 
 
+# ==================================================
+# المستخدم المخصص
+# ==================================================
 class User(AbstractUser):
     """
-    المستخدم المخصص
+    نموذج المستخدم المخصص للموقع
     """
 
     phone = models.CharField(
+        "رقم الجوال",
         max_length=15,
         unique=True,
         null=True,
-        blank=True,
-        verbose_name="رقم الجوال"
+        blank=True
     )
 
+    # إعادة تعريف العلاقات لتفادي تعارضات Django
     groups = models.ManyToManyField(
         Group,
-        related_name='core_users',
+        related_name="core_users",
         blank=True,
         verbose_name="المجموعات",
         help_text="المجموعات التي ينتمي إليها المستخدم"
@@ -25,7 +29,7 @@ class User(AbstractUser):
 
     user_permissions = models.ManyToManyField(
         Permission,
-        related_name='core_users_permissions',
+        related_name="core_users_permissions",
         blank=True,
         verbose_name="الصلاحيات",
         help_text="الصلاحيات الخاصة بالمستخدم"
@@ -39,48 +43,119 @@ class User(AbstractUser):
         return self.username
 
 
+# ==================================================
+# عناوين المستخدم
+# ==================================================
 class Address(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='addresses',
+        related_name="addresses",
         verbose_name="المستخدم"
     )
-    city = models.CharField(max_length=100, verbose_name="المدينة")
-    district = models.CharField(max_length=100, verbose_name="الحي")
-    street = models.CharField(max_length=255, verbose_name="الشارع")
+
+    city = models.CharField("المدينة", max_length=100)
+    district = models.CharField("الحي", max_length=100)
+    street = models.CharField("الشارع", max_length=255)
     postal_code = models.CharField(
+        "الرمز البريدي",
         max_length=10,
-        blank=True,
-        verbose_name="الرمز البريدي"
+        blank=True
     )
 
     created_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name="تاريخ الإنشاء"
+        "تاريخ الإنشاء",
+        auto_now_add=True
     )
 
     class Meta:
         verbose_name = "عنوان"
         verbose_name_plural = "العناوين"
+        ordering = ["-created_at"]
 
     def __str__(self):
-        return f"{self.city} - {self.district}"
+        return f"{self.city} – {self.district}"
 
 
+# ==================================================
+# إعدادات الموقع العامة (Singleton)
+# ==================================================
 class SiteSetting(models.Model):
-    site_name = models.CharField(max_length=255, verbose_name="اسم المتجر")
-    currency = models.CharField(max_length=10, default='SAR', verbose_name="العملة")
+    site_name = models.CharField(
+        "اسم الموقع",
+        max_length=255
+    )
+
+    site_slogan = models.CharField(
+        "الشعار النصي",
+        max_length=255,
+        blank=True
+    )
+
+    currency = models.CharField(
+        "العملة",
+        max_length=10,
+        default="SAR"
+    )
+
     tax_percentage = models.DecimalField(
+        "نسبة الضريبة (%)",
         max_digits=5,
         decimal_places=2,
-        default=15,
-        verbose_name="نسبة الضريبة (%)"
+        default=15
+    )
+
+    updated_at = models.DateTimeField(
+        "آخر تحديث",
+        auto_now=True
     )
 
     class Meta:
-        verbose_name = "إعدادات المتجر"
-        verbose_name_plural = "إعدادات المتجر"
+        verbose_name = "إعدادات الموقع"
+        verbose_name_plural = "إعدادات الموقع"
 
     def __str__(self):
         return self.site_name
+
+
+# ==================================================
+# الخدمات المعروضة في الصفحة الرئيسية
+# ==================================================
+class Service(models.Model):
+    title = models.CharField(
+        "اسم الخدمة",
+        max_length=200
+    )
+
+    description = models.TextField(
+        "وصف مختصر"
+    )
+
+    icon = models.CharField(
+        "أيقونة (FontAwesome)",
+        max_length=100,
+        help_text="مثال: fa-solid fa-building"
+    )
+
+    is_active = models.BooleanField(
+        "مفعلة",
+        default=True
+    )
+
+    order = models.PositiveIntegerField(
+        "الترتيب",
+        default=0
+    )
+
+    created_at = models.DateTimeField(
+        "تاريخ الإنشاء",
+        auto_now_add=True
+    )
+
+    class Meta:
+        verbose_name = "خدمة"
+        verbose_name_plural = "الخدمات"
+        ordering = ["order"]
+
+    def __str__(self):
+        return self.title

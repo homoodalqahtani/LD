@@ -1,115 +1,67 @@
-{% include "header.html" %}
+{% extends "base.html" %}
+{% block title %}الصفحة الرئيسية – رفاهية التصاميم{% endblock %}
 
-<style>
-.hero{
-    background:
-        linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
-        url("https://images.unsplash.com/photo-1600607687939-ce8a6c25118c");
-    background-size:cover;
-    background-position:center;
-    min-height:90vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    color:white;
-    padding:40px;
-}
+{% block content %}
 
-.hero h1{
-    font-size:46px;
-    color:var(--gold);
-    margin-bottom:20px;
-}
-
-.hero p{
-    font-size:20px;
-    max-width:700px;
-    margin:auto;
-    margin-bottom:30px;
-}
-
-.hero button{
-    background:var(--gold);
-    color:black;
-    border:none;
-    padding:15px 35px;
-    font-size:16px;
-    cursor:pointer;
-    border-radius:30px;
-}
-
-.hero button:hover{
-    background:#b9982f;
-}
-
-/* Services */
-.services{
-    padding:80px 40px;
-    background:#f7f7f7;
-}
-
-.services h2{
-    text-align:center;
-    color:var(--black);
-    margin-bottom:50px;
-}
-
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:30px;
-}
-
-.card{
-    background:white;
-    padding:30px;
-    border-radius:16px;
-    box-shadow:0 10px 30px rgba(0,0,0,.08);
-    transition:.3s;
-}
-
-.card:hover{
-    transform:translateY(-8px);
-}
-
-.card h3{
-    color:var(--gold);
-    margin-bottom:15px;
-}
-</style>
-
+<!-- HERO -->
 <section class="hero">
-    <div>
-        <h1>نحو تصميم يليق بذائقتك</h1>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+        <h1>ديكورات فاخرة</h1>
+        <p>نجسد رؤيتك بأسلوب عصري وتنفيذ احترافي</p>
+
+        <div class="hero-buttons">
+            <a href="#" class="btn primary">من نحن</a>
+            <a href="#" class="btn secondary">اتصل بنا</a>
+        </div>
+    </div>
+
+    <div class="hero-arrows">
+        <span>‹</span>
+        <span>›</span>
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about">
+    <div class="container">
+        <h2>عن رفاهية التصاميم</h2>
         <p>
-            نقدم حلول تصميم وتنفيذ متكاملة للمشاريع السكنية والتجارية،
-            بجودة عالية ولمسة فخامة عصرية.
+            نحن شركة متخصصة في التصميم الداخلي والتشطيبات،
+            نقدم حلولًا تجمع بين الفخامة والجودة والتنفيذ الدقيق.
         </p>
-        <button>اطلب استشارة</button>
     </div>
 </section>
 
+<!-- SERVICES -->
 <section class="services">
-    <h2>خدماتنا</h2>
-    <div class="cards">
-        <div class="card">
-            <h3>تصميم داخلي</h3>
-            <p>تصاميم عصرية وفاخرة تناسب ذوقك وتحقق أعلى استغلال للمساحات.</p>
-        </div>
-        <div class="card">
-            <h3>تصميم خارجي</h3>
-            <p>واجهات حديثة تجمع بين الجمال والمتانة.</p>
-        </div>
-        <div class="card">
-            <h3>تنسيق حدائق</h3>
-            <p>حدائق راقية تعكس الهدوء والفخامة.</p>
-        </div>
-        <div class="card">
-            <h3>تشطيبات</h3>
-            <p>تنفيذ دقيق بأعلى معايير الجودة.</p>
+    <div class="container">
+        <div class="services-grid">
+
+            <div class="service-card">
+                <h3>تصميم داخلي</h3>
+                <p>أفكار مبتكرة تناسب جميع المساحات</p>
+            </div>
+
+            <div class="service-card">
+                <h3>تشطيبات</h3>
+                <p>تنفيذ بأعلى معايير الجودة</p>
+            </div>
+
+            <div class="service-card">
+                <h3>إشراف هندسي</h3>
+                <p>متابعة دقيقة حتى التسليم</p>
+            </div>
+
         </div>
     </div>
 </section>
 
-{% include "footer.html" %}
+<!-- CTA -->
+<section class="cta">
+    <h2>جاهز نبدأ مشروعك؟</h2>
+    <a href="#" class="btn primary">اطلب عرض سعر</a>
+</section>
+
+{% endblock %}

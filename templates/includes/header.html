@@ -1,0 +1,32 @@
+{% load static %}
+
+<header class="site-header">
+    <div class="container header-inner">
+
+        <!-- الشعار -->
+        <div class="logo">
+            <a href="/">
+                <img src="{% static 'images/logo.png' %}" alt="رفاهية التصاميم">
+            </a>
+        </div>
+
+        <!-- القائمة -->
+        <nav class="main-nav">
+            <ul>
+                <li><a href="/">الرئيسية</a></li>
+                <li><a href="#services">خدماتنا</a></li>
+                <li><a href="#about">من نحن</a></li>
+                <li><a href="#projects">أعمالنا</a></li>
+                <li><a href="#contact">تواصل معنا</a></li>
+
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'accounts:profile' %}">حسابي</a></li>
+                    <li><a href="{% url 'accounts:logout' %}">خروج</a></li>
+                {% else %}
+                    <li><a href="{% url 'accounts:login' %}">دخول</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+
+    </div>
+</header>
