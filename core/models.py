@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.core.validators import RegexValidator
+from django.utils.text import slugify
 
 
 # ==================================================
@@ -7,7 +9,7 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 # ==================================================
 class User(AbstractUser):
     """
-    نموذج المستخدم المخصص للموقع
+    نموذج المستخدم المخصص لموقع رفاهية التصاميم للمقاولات
     """
 
     phone = models.CharField(
@@ -15,7 +17,13 @@ class User(AbstractUser):
         max_length=15,
         unique=True,
         null=True,
-        blank=True
+        blank=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\+?\d{9,15}$',
+                message="أدخل رقم جوال صحيح"
+            )
+        ]
     )
 
     # إعادة تعريف العلاقات لتفادي تعارضات Django
@@ -23,23 +31,21 @@ class User(AbstractUser):
         Group,
         related_name="core_users",
         blank=True,
-        verbose_name="المجموعات",
-        help_text="المجموعات التي ينتمي إليها المستخدم"
+        verbose_name="المجموعات"
     )
 
     user_permissions = models.ManyToManyField(
         Permission,
         related_name="core_users_permissions",
         blank=True,
-        verbose_name="الصلاحيات",
-        help_text="الصلاحيات الخاصة بالمستخدم"
+        verbose_name="الصلاحيات"
     )
 
     class Meta:
         verbose_name = "مستخدم"
         verbose_name_plural = "المستخدمون"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.username
 
 
@@ -57,6 +63,7 @@ class Address(models.Model):
     city = models.CharField("المدينة", max_length=100)
     district = models.CharField("الحي", max_length=100)
     street = models.CharField("الشارع", max_length=255)
+
     postal_code = models.CharField(
         "الرمز البريدي",
         max_length=10,
@@ -71,9 +78,9 @@ class Address(models.Model):
     class Meta:
         verbose_name = "عنوان"
         verbose_name_plural = "العناوين"
-        ordering = ["-created_at"]
+        ordering = ("-created_at",)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.city} – {self.district}"
 
 
@@ -81,9 +88,14 @@ class Address(models.Model):
 # إعدادات الموقع العامة (Singleton)
 # ==================================================
 class SiteSetting(models.Model):
+    """
+    إعدادات عامة للموقع (سجل واحد فقط)
+    """
+
     site_name = models.CharField(
         "اسم الموقع",
-        max_length=255
+        max_length=255,
+        default="رفاهية التصاميم للمقاولات"
     )
 
     site_slogan = models.CharField(
@@ -114,7 +126,13 @@ class SiteSetting(models.Model):
         verbose_name = "إعدادات الموقع"
         verbose_name_plural = "إعدادات الموقع"
 
-    def __str__(self):
+    def save(self, *args, **kwargs):
+        # ضمان وجود سجل واحد فقط
+        if not self.pk and SiteSetting.objects.exists():
+            raise ValueError("لا يمكن إنشاء أكثر من إعداد واحد للموقع")
+        super().save(*args, **kwargs)
+
+    def __str__(self) -> str:
         return self.site_name
 
 
@@ -122,9 +140,20 @@ class SiteSetting(models.Model):
 # الخدمات المعروضة في الصفحة الرئيسية
 # ==================================================
 class Service(models.Model):
+    """
+    خدمات رفاهية التصاميم المعروضة في الصفحة الرئيسية
+    """
+
     title = models.CharField(
         "اسم الخدمة",
         max_length=200
+    )
+
+    slug = models.SlugField(
+        "الرابط",
+        max_length=220,
+        unique=True,
+        blank=True
     )
 
     description = models.TextField(
@@ -134,6 +163,7 @@ class Service(models.Model):
     icon = models.CharField(
         "أيقونة (FontAwesome)",
         max_length=100,
+        blank=True,
         help_text="مثال: fa-solid fa-building"
     )
 
@@ -152,10 +182,23 @@ class Service(models.Model):
         auto_now_add=True
     )
 
+    updated_at = models.DateTimeField(
+        "آخر تحديث",
+        auto_now=True
+    )
+
     class Meta:
         verbose_name = "خدمة"
         verbose_name_plural = "الخدمات"
-        ordering = ["order"]
+        ordering = ("order", "id")
+        indexes = [
+            models.Index(fields=["is_active", "order"]),
+        ]
 
-    def __str__(self):
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title, allow_unicode=True)
+        super().save(*args, **kwargs)
+
+    def __str__(self) -> str:
         return self.title

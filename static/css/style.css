@@ -1,61 +1,55 @@
 /* ==================================================
    Global
 ================================================== */
-* {
-    box-sizing: border-box;
-}
-
 body {
     margin: 0;
     font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
     background: #f4f6f8;
     direction: rtl;
-    color: #111;
-}
-
-main {
-    padding-top: 88px; /* تعويض الهيدر الثابت */
 }
 
 /* ==================================================
-   Header – Charcoal Black (Fixed & Luxury)
+   Header (Premium + Smart)
 ================================================== */
 .site-header {
     position: fixed;
     top: 0;
     right: 0;
     left: 0;
-    z-index: 1000;
-
-    background: #111; /* أسود فحمي صريح */
-    border-bottom: 1px solid #c59d5f;
-
-    padding: 18px 0;
-
-    transition:
-        padding 0.3s ease,
-        box-shadow 0.3s ease;
+    z-index: 999;
+    background: #111;
 }
+
 
 .site-header.scrolled {
-    padding: 12px 0;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.55);
+    padding: 10px 0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    border-bottom-color: rgba(197,157,95,0.6);
 }
 
-/* ==================================================
-   Header Inner
-================================================== */
+
+
+
+
+/* عند التمرير */
+.site-header {
+    transition:
+        padding 0.35s cubic-bezier(.4,0,.2,1),
+        box-shadow 0.35s cubic-bezier(.4,0,.2,1),
+        border-bottom-color 0.35s ease;
+}
+
+
 .header-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 18px;
 }
 
-/* Logo */
 .logo img {
     height: 42px;
-    display: block;
-    transition: height 0.3s ease;
+    transition: height 0.25s ease;
 }
 
 .site-header.scrolled .logo img {
@@ -68,46 +62,52 @@ main {
 .main-nav ul {
     list-style: none;
     display: flex;
-    gap: 20px;
+    gap: 18px;
     padding: 0;
     margin: 0;
     align-items: center;
 }
 
 .main-nav a {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-
     font-size: 14px;
-    font-weight: 600;
-    color: #ffffff;
-
-    padding: 8px 14px;
-    border-radius: 8px;
-
-    text-decoration: none;
-    opacity: 1;
-
-    transition: background-color 0.2s ease, color 0.2s ease;
+    font-weight: 500;
+    color: #fff;
+    opacity: 0.9;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
 }
 
-/* أيقونات الهيدر */
-.main-nav i {
-    font-size: 15px;
-    color: #ffffff;
-}
-
-/* Hover */
 .main-nav a:hover {
-    background: rgba(255,255,255,0.12);
+    opacity: 1;
 }
 
-/* Active (الرئيسية / أعمالنا) */
+/* Active */
 .main-nav a.active {
     color: #c59d5f;
-    background: rgba(197,157,95,0.18);
-    box-shadow: inset 0 -2px 0 #c59d5f;
+    font-weight: 700;
+    opacity: 1;
+    background: rgba(197,157,95,0.12);
+    position: relative;
+}
+
+.main-nav a.active::after {
+    content: "";
+    position: absolute;
+    right: 8px;
+    left: 8px;
+    bottom: -6px;
+    height: 2px;
+    background: #c59d5f;
+    border-radius: 2px;
+}
+
+
+/* أيقونات */
+.main-nav i {
+    margin-left: 6px;
+    font-size: 14px;
+    color: #fff;
 }
 
 .main-nav a.active i {
@@ -124,9 +124,9 @@ main {
 @media (max-width: 900px) {
     .nav-toggle {
         display: inline-flex;
-        background: transparent;
         color: #fff;
-        border: 1px solid rgba(255,255,255,0.4);
+        border: 1px solid rgba(255,255,255,0.3);
+        background: transparent;
         padding: 6px 10px;
         border-radius: 6px;
     }
@@ -146,13 +146,12 @@ main {
 
     .main-nav ul {
         flex-direction: column;
-        padding: 14px;
-        gap: 8px;
+        padding: 12px;
     }
 
     .main-nav a {
         width: 100%;
-        padding: 12px;
+        padding: 10px;
     }
 }
 
@@ -160,6 +159,7 @@ main {
    Hero Section
 ================================================== */
 .hero {
+    
     position: relative;
     height: 90vh;
     min-height: 520px;
@@ -175,8 +175,8 @@ main {
     inset: 0;
     background: linear-gradient(
         to bottom,
-        rgba(0,0,0,0.75),
-        rgba(0,0,0,0.9)
+        rgba(0,0,0,0.6),
+        rgba(0,0,0,0.85)
     );
 }
 
@@ -197,50 +197,29 @@ main {
     margin-bottom: 30px;
 }
 
-/* ==================================================
-   Unified Buttons – Solid & Clear
-================================================== */
+/* Buttons */
+.hero-actions {
+    display: flex;
+    gap: 15px;
+}
+
 .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-
-    padding: 14px 30px;
-    border-radius: 8px;
-
+    padding: 12px 26px;
+    border-radius: 6px;
     font-size: 14px;
-    font-weight: 700;
-
     text-decoration: none;
-    cursor: pointer;
-    border: none;
-
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition: all 0.2s ease;
 }
 
-/* Gold Button */
 .btn-primary {
-    background-color: #c59d5f;
+    background: #c59d5f;
     color: #111;
-    box-shadow: 0 10px 26px rgba(197,157,95,0.45);
+    font-weight: 600;
 }
 
-.btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 14px 32px rgba(197,157,95,0.6);
-}
-
-/* Dark Button */
-.btn-dark {
-    background-color: #111;
+.btn-outline {
+    border: 1px solid #fff;
     color: #fff;
-    box-shadow: 0 10px 26px rgba(0,0,0,0.4);
-}
-
-.btn-dark:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 14px 32px rgba(0,0,0,0.6);
 }
 
 /* ==================================================
@@ -258,14 +237,14 @@ main {
 
 .project-card {
     background: #fff;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 10px 26px rgba(0,0,0,0.1);
-    transition: transform 0.25s ease;
+    box-shadow: 0 8px 20px rgba(0,0,0,.08);
+    transition: all 0.25s ease;
 }
 
 .project-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
 }
 
 .project-image img {
@@ -275,8 +254,8 @@ main {
 }
 
 .project-body {
-    padding: 16px;
+    padding: 15px;
 }
-.home-page main {
-    padding-top: 0;
+body {
+    padding-top: 80px; /* ارتفاع الهيدر */
 }

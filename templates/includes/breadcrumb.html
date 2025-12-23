@@ -1,0 +1,19 @@
+<nav class="breadcrumb">
+    <ul>
+        <li>
+            <a href="{% url 'core:home' %}">الرئيسية</a>
+        </li>
+
+        {% if breadcrumb %}
+            {% for item in breadcrumb %}
+                <li>
+                    {% if item.url %}
+                        <a href="{{ item.url }}">{{ item.title }}</a>
+                    {% else %}
+                        <span>{{ item.title }}</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+</nav>

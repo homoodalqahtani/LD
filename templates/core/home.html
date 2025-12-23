@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}
+الصفحة الرئيسية – رفاهية التصاميم
+{% endblock %}
+
+{% block content %}
+
+<!-- ===============================
+     HERO SECTION
+================================ -->
+<section class="hero">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content container">
+        <h1>رفاهية التصاميم للمقاولات</h1>
+        <p>
+            نُجسّد رؤيتك بأسلوب عصري وتنفيذ احترافي يجمع بين
+            الفخامة والجودة
+        </p>
+
+        <div class="hero-actions">
+            <a href="{% url 'core:about' %}" class="btn btn-primary">
+                من نحن
+            </a>
+            <a href="{% url 'core:contact' %}" class="btn btn-outline">
+                تواصل معنا
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===============================
+     ABOUT
+================================ -->
+<section class="about page-content">
+    <div class="container">
+        <h2 class="page-title">عن رفاهية التصاميم</h2>
+        <p class="page-intro">
+            نحن شركة متخصصة في التصميم الداخلي والتشطيبات،
+            نقدم حلولًا متكاملة تجمع بين الفخامة، الجودة،
+            والتنفيذ الدقيق وفق أعلى المعايير.
+        </p>
+    </div>
+</section>
+
+<!-- ===============================
+     SERVICES
+================================ -->
+<section class="services page-content">
+    <div class="container">
+        <h2 class="page-title">خدماتنا</h2>
+
+        <div class="projects-grid">
+
+            <div class="project-card">
+                <div class="project-body">
+                    <h3>تصميم داخلي</h3>
+                    <p>
+                        أفكار مبتكرة تناسب جميع المساحات
+                        بأسلوب عصري وفاخر.
+                    </p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-body">
+                    <h3>تشطيبات</h3>
+                    <p>
+                        تنفيذ احترافي بأعلى معايير الجودة
+                        والدقة في التفاصيل.
+                    </p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-body">
+                    <h3>إشراف هندسي</h3>
+                    <p>
+                        متابعة دقيقة للمشروع من البداية
+                        وحتى التسليم النهائي.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ===============================
+     CTA
+================================ -->
+<section class="cta page-content" style="text-align:center;">
+    <div class="container">
+        <h2 class="page-title">جاهز نبدأ مشروعك؟</h2>
+        <p class="page-intro">
+            تواصل معنا الآن واحصل على استشارة وعرض سعر يناسب احتياجك
+        </p>
+
+        <a href="{% url 'core:contact' %}" class="btn btn-primary">
+            اطلب عرض سعر
+        </a>
+    </div>
+</section>
+
+{% endblock %}

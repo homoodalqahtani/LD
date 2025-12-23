@@ -1,32 +1,90 @@
-{% load static %}
+<nav class="main-nav" id="mainNav" aria-label="القائمة الرئيسية">
+    <ul>
 
-<header class="site-header">
-    <div class="container header-inner">
-
-        <!-- الشعار -->
-        <div class="logo">
-            <a href="/">
-                <img src="{% static 'images/logo.png' %}" alt="رفاهية التصاميم">
+        <!-- الرئيسية -->
+        <li>
+            <a href="{% url 'core:home' %}"
+               class="nav-link{% if request.resolver_match.url_name == 'home' %} active{% endif %}"
+               {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}
+               data-nav="home">
+                الرئيسية
             </a>
-        </div>
+        </li>
 
-        <!-- القائمة -->
-        <nav class="main-nav">
-            <ul>
-                <li><a href="/">الرئيسية</a></li>
-                <li><a href="#services">خدماتنا</a></li>
-                <li><a href="#about">من نحن</a></li>
-                <li><a href="#projects">أعمالنا</a></li>
-                <li><a href="#contact">تواصل معنا</a></li>
+        <!-- خدماتنا -->
+        <li>
+            <a href="{% url 'core:services' %}"
+               class="nav-link{% if request.resolver_match.url_name == 'services' %} active{% endif %}"
+               {% if request.resolver_match.url_name == 'services' %}aria-current="page"{% endif %}
+               data-nav="services">
+                خدماتنا
+            </a>
+        </li>
 
-                {% if user.is_authenticated %}
-                    <li><a href="{% url 'accounts:profile' %}">حسابي</a></li>
-                    <li><a href="{% url 'accounts:logout' %}">خروج</a></li>
-                {% else %}
-                    <li><a href="{% url 'accounts:login' %}">دخول</a></li>
-                {% endif %}
-            </ul>
-        </nav>
+        <!-- من نحن -->
+        <li>
+            <a href="{% url 'core:about' %}"
+               class="nav-link{% if request.resolver_match.url_name == 'about' %} active{% endif %}"
+               {% if request.resolver_match.url_name == 'about' %}aria-current="page"{% endif %}
+               data-nav="about">
+                من نحن
+            </a>
+        </li>
 
-    </div>
-</header>
+        <!-- أعمالنا -->
+        <li>
+            <a href="{% url 'core:projects' %}"
+               class="nav-link{% if request.resolver_match.url_name == 'projects' %} active{% endif %}"
+               {% if request.resolver_match.url_name == 'projects' %}aria-current="page"{% endif %}
+               data-nav="projects">
+                أعمالنا
+            </a>
+        </li>
+
+        <!-- تواصل معنا -->
+        <li>
+            <a href="{% url 'core:contact' %}"
+               class="nav-link{% if request.resolver_match.url_name == 'contact' %} active{% endif %}"
+               {% if request.resolver_match.url_name == 'contact' %}aria-current="page"{% endif %}
+               data-nav="contact">
+                تواصل معنا
+            </a>
+        </li>
+
+        {% if user.is_authenticated %}
+
+            <!-- حسابي -->
+            <li>
+                <a href="{% url 'core:profile' %}"
+                   class="nav-link{% if request.resolver_match.url_name == 'profile' %} active{% endif %}"
+                   {% if request.resolver_match.url_name == 'profile' %}aria-current="page"{% endif %}
+                   data-nav="profile">
+                    حسابي
+                </a>
+            </li>
+
+            <!-- خروج -->
+            <li>
+                <a href="{% url 'core:logout' %}"
+                   class="nav-link logout-link"
+                   data-nav="logout">
+                    خروج
+                </a>
+            </li>
+
+        {% else %}
+
+            <!-- دخول -->
+            <li>
+                <a href="{% url 'core:login' %}"
+                   class="nav-link{% if request.resolver_match.url_name == 'login' %} active{% endif %}"
+                   {% if request.resolver_match.url_name == 'login' %}aria-current="page"{% endif %}
+                   data-nav="login">
+                    دخول
+                </a>
+            </li>
+
+        {% endif %}
+
+    </ul>
+</nav>

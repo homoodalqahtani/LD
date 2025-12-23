@@ -6,36 +6,42 @@ from django.conf.urls.static import static
 urlpatterns = [
 
     # ==================================
-    # الصفحة الرئيسية
+    # الصفحة الرئيسية والمحتوى العام
     # ==================================
-    path('', include('core.home_urls')),
+    path("", include("core.urls")),
 
 
     # ==================================
     # حسابات المستخدمين
+    # /accounts/login/
+    # /accounts/register/
     # ==================================
-    path('accounts/', include('core.urls')),
-
-
-    # ==================================
-    # لوحة التحكم
-    # ==================================
-    path('admin/', admin.site.urls),
 
 
     # ==================================
     # المتجر
+    # /shop/
     # ==================================
-    path('shop/', include('catalog.urls')),
+    path("shop/", include("catalog.urls")),
 
 
     # ==================================
     # الطلبات
+    # /orders/
     # ==================================
-    path('orders/', include('orders.urls')),
+    path("orders/", include("orders.urls")),
+
+
+    # ==================================
+    # لوحة التحكم (Admin)
+    # ==================================
+    path("admin/", admin.site.urls),
 ]
 
 
+# ==================================
+# ملفات الوسائط أثناء التطوير فقط
+# ==================================
 if settings.DEBUG:
     urlpatterns += static(
         settings.MEDIA_URL,

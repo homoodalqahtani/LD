@@ -9,16 +9,39 @@ User = get_user_model()
 
 
 # ==================================================
-# الصفحة الرئيسية (Landing Page)
+# الصفحة الرئيسية
 # ==================================================
 def home_view(request):
-    """
-    الصفحة الرئيسية لموقع رفاهية التصاميم
-    """
+    return render(request, "core/home.html")
+
+
+# ==================================================
+# الصفحات العامة
+# ==================================================
+def about_view(request):
+    return render(request, "core/about.html")
+
+
+def services_view(request):
     context = {
-        "page_title": "رفاهية التصاميم للمقاولات",
+        "breadcrumb": [
+            {"title": "خدماتنا"},
+        ]
     }
-    return render(request, "home.html", context)
+    return render(request, "core/services.html", context)
+
+
+def projects_view(request):
+    context = {
+        "breadcrumb": [
+            {"title": "أعمالنا"},
+        ]
+    }
+    return render(request, "core/projects.html", context)
+
+
+def contact_view(request):
+    return render(request, "core/contact.html")
 
 
 # ==================================================
@@ -26,11 +49,8 @@ def home_view(request):
 # ==================================================
 @require_http_methods(["GET", "POST"])
 def register_view(request):
-    """
-    إنشاء حساب مستخدم جديد
-    """
     if request.user.is_authenticated:
-        return redirect("home")
+        return redirect("core:home")
 
     if request.method == "POST":
         username = request.POST.get("username", "").strip()
@@ -38,30 +58,31 @@ def register_view(request):
         password1 = request.POST.get("password1")
         password2 = request.POST.get("password2")
 
-        # تحقق من المدخلات
         if not username or not password1 or not password2:
             messages.error(request, "جميع الحقول مطلوبة")
-            return redirect("accounts:register")
+            return redirect("core:register")
 
         if password1 != password2:
             messages.error(request, "كلمتا المرور غير متطابقتين")
-            return redirect("accounts:register")
+            return redirect("core:register")
 
         if User.objects.filter(username=username).exists():
             messages.error(request, "اسم المستخدم مستخدم مسبقًا")
-            return redirect("accounts:register")
+            return redirect("core:register")
 
-        # إنشاء المستخدم
         user = User.objects.create_user(
             username=username,
-            phone=phone,
             password=password1
         )
 
-        login(request, user)
-        messages.success(request, "تم إنشاء الحساب وتسجيل الدخول بنجاح")
+        if phone:
+            user.phone = phone
+            user.save(update_fields=["phone"])
 
-        return redirect("home")
+        login(request, user)
+        messages.success(request, "تم إنشاء الحساب بنجاح")
+
+        return redirect("core:home")
 
     return render(request, "core/register.html")
 
@@ -71,28 +92,25 @@ def register_view(request):
 # ==================================================
 @require_http_methods(["GET", "POST"])
 def login_view(request):
-    """
-    تسجيل دخول المستخدم
-    """
     if request.user.is_authenticated:
-        return redirect("home")
+        return redirect("core:home")
 
     if request.method == "POST":
         username = request.POST.get("username", "").strip()
         password = request.POST.get("password")
 
         if not username or not password:
-            messages.error(request, "يرجى إدخال اسم المستخدم وكلمة المرور")
-            return redirect("accounts:login")
+            messages.error(request, "يرجى إدخال البيانات")
+            return redirect("core:login")
 
         user = authenticate(request, username=username, password=password)
 
         if user:
             login(request, user)
-            messages.success(request, "تم تسجيل الدخول بنجاح")
-            return redirect("home")
+            messages.success(request, "تم تسجيل الدخول")
+            return redirect("core:home")
 
-        messages.error(request, "اسم المستخدم أو كلمة المرور غير صحيحة")
+        messages.error(request, "بيانات الدخول غير صحيحة")
 
     return render(request, "core/login.html")
 
@@ -100,25 +118,16 @@ def login_view(request):
 # ==================================================
 # تسجيل الخروج
 # ==================================================
-@login_required(login_url="accounts:login")
+@login_required(login_url="core:login")
 def logout_view(request):
-    """
-    تسجيل خروج المستخدم
-    """
     logout(request)
-    messages.info(request, "تم تسجيل الخروج بنجاح")
-    return redirect("home")
+    messages.info(request, "تم تسجيل الخروج")
+    return redirect("core:home")
 
 
 # ==================================================
 # الملف الشخصي
 # ==================================================
-@login_required(login_url="accounts:login")
+@login_required(login_url="core:login")
 def profile_view(request):
-    """
-    صفحة الملف الشخصي
-    """
-    context = {
-        "user": request.user,
-    }
-    return render(request, "core/profile.html", context)
+    return render(request, "core/profile.html")

@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>تسجيل الدخول | رفاهية التصاميم</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+{% include "includes/header.html" %}
+
+<main class="auth-page">
+    <div class="auth-box">
+
+        <h2>تسجيل الدخول</h2>
+
+        <!-- رسائل النظام -->
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>اسم المستخدم</label>
+                <input type="text" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" name="password" required>
+            </div>
+
+            <button type="submit">دخول</button>
+        </form>
+
+        <p class="auth-links">
+            ليس لديك حساب؟
+            <a href="{% url 'core:register' %}">إنشاء حساب</a>
+        </p>
+
+    </div>
+</main>
+
+{% include "includes/footer.html" %}
+
+</body>
+</html>

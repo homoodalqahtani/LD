@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>أعمالنا | رفاهية التصاميم</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+{% include "includes/header.html" %}
+
+{% include "includes/breadcrumb.html" %}
+
+<main class="page-content container">
+
+    <h1 class="page-title">أعمالنا</h1>
+    <p class="page-intro">
+        نفخر بتنفيذ مشاريع متنوعة تجمع بين الجودة، الإبداع، والالتزام بأعلى المعايير.
+    </p>
+
+    <!-- شبكة المشاريع -->
+    <section class="projects-grid">
+
+        <!-- مشروع 1 -->
+        <article class="project-card">
+            <div class="project-image">
+                <img src="{% static 'images/project-1.jpg' %}" alt="مشروع فيلا سكنية">
+            </div>
+            <div class="project-body">
+                <h3>فيلا سكنية حديثة</h3>
+                <p>تصميم وتنفيذ فيلا بأسلوب عصري باستخدام أفضل المواد.</p>
+            </div>
+        </article>
+
+        <!-- مشروع 2 -->
+        <article class="project-card">
+            <div class="project-image">
+                <img src="{% static 'images/project-2.jpg' %}" alt="مشروع تشطيب داخلي">
+            </div>
+            <div class="project-body">
+                <h3>تشطيب داخلي فاخر</h3>
+                <p>أعمال تشطيب داخلي متكاملة لفيلا سكنية.</p>
+            </div>
+        </article>
+
+        <!-- مشروع 3 -->
+        <article class="project-card">
+            <div class="project-image">
+                <img src="{% static 'images/project-3.jpg' %}" alt="مشروع واجهات">
+            </div>
+            <div class="project-body">
+                <h3>واجهات معمارية</h3>
+                <p>تصميم وتنفيذ واجهات خارجية بطابع عصري.</p>
+            </div>
+        </article>
+
+    </section>
+
+</main>
+
+{% include "includes/footer.html" %}
+
+</body>
+</html>

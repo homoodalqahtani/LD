@@ -4,34 +4,115 @@
 <head>
     <meta charset="UTF-8">
 
+    <!-- ===============================
+         SEO: Title
+    ================================ -->
     <title>
-        {% block title %}رفاهية التصاميم{% endblock %}
+        {% block title %}رفاهية التصاميم للمقاولات{% endblock %}
     </title>
+
+    <!-- ===============================
+         SEO: Meta Description
+    ================================ -->
+    <meta name="description"
+          content="{% block meta_description %}
+          شركة رفاهية التصاميم للمقاولات – تصميم داخلي، تشطيبات، وإشراف هندسي باحترافية عالية
+          {% endblock %}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- ===============================
+         Open Graph (Social Sharing)
+    ================================ -->
+    <meta property="og:site_name" content="رفاهية التصاميم للمقاولات">
+    <meta property="og:title"
+          content="{% block og_title %}رفاهية التصاميم للمقاولات{% endblock %}">
+    <meta property="og:description"
+          content="{% block og_description %}
+          تصميم وتنفيذ مشاريع فاخرة تجمع بين الجودة والدقة
+          {% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{% static 'images/og-image.jpg' %}">
 
-    <!-- Font Awesome -->
+    <!-- ===============================
+         Google Font
+    ================================ -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- ===============================
+         Font Awesome
+    ================================ -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- CSS -->
+    <!-- ===============================
+         CSS Files
+    ================================ -->
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  
 </head>
 
 <body>
 
-    <!-- Header -->
+    <!-- ===============================
+         Header
+    ================================ -->
     {% include "includes/header.html" %}
 
+    <!-- ===============================
+         Page Content
+    ================================ -->
     <main>
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
+    <!-- ===============================
+         Footer
+    ================================ -->
     {% include "includes/footer.html" %}
+
+    <!-- ===============================
+         Hero Slider JS
+    ================================ -->
+    <script src="{% static 'js/hero-slider.js' %}"></script>
+
+    <!-- ===============================
+         Header Scroll + Mobile Nav
+    ================================ -->
+    <script>
+      (function () {
+        const header = document.getElementById("siteHeader");
+        const nav = document.getElementById("mainNav");
+        const toggle = document.getElementById("navToggle");
+
+        // Shrink header on scroll
+        function onScroll() {
+          if (!header) return;
+          if (window.scrollY > 10) header.classList.add("scrolled");
+          else header.classList.remove("scrolled");
+        }
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+
+        // Mobile nav toggle
+        if (toggle && nav) {
+          toggle.addEventListener("click", function () {
+            const isOpen = nav.classList.toggle("open");
+            toggle.setAttribute("aria-expanded", String(isOpen));
+          });
+
+          // Close menu when clicking a link
+          nav.addEventListener("click", function (e) {
+            const target = e.target;
+            if (target && target.tagName === "A" && nav.classList.contains("open")) {
+              nav.classList.remove("open");
+              toggle.setAttribute("aria-expanded", "false");
+            }
+          });
+        }
+      })();
+    </script>
 
 </body>
 </html>
